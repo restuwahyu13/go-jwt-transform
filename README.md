@@ -97,7 +97,7 @@ For information on bugs related to package libraries, please visit [here](https:
 
 ## Contributing
 
-Want to make **jwt-transform** more perfect ? Let's contribute and follow the
+Want to make **go-jwt-transform** more perfect ? Let's contribute and follow the
 [contribution guide.](https://github.com/restuwahyu13/go-jwt-transform/blob/main/CONTRIBUTING.md)
 
 ## License
