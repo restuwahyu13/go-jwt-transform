@@ -1,10 +1,7 @@
 # Go JWT Transform
 
-[![Build Status](https://scrutinizer-ci.com/g/restuwahyu13/jwt-transform/badges/build.png?b=main)](https://scrutinizer-ci.com/g/restuwahyu13/jwt-transform/build-status/main)
-[![CodeFactor](https://www.codefactor.io/repository/github/restuwahyu13/jwt-transform/badge)](https://www.codefactor.io/repository/github/restuwahyu13/jwt-transform)
-[![codebeat badge](https://codebeat.co/badges/56d95df5-235b-4988-8a4e-b1b5aad6d796)](https://codebeat.co/projects/github-com-restuwahyu13-jwt-transform-main)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/b55a9532f9f84ebd94b37b52c32d7472)](https://www.codacy.com/gh/restuwahyu13/jwt-transform/dashboard?utm_source=github.com&utm_medium=referral&utm_content=restuwahyu13/jwt-transform&utm_campaign=Badge_Grade)
-![node-current](https://img.shields.io/node/v/jwt-transform?style=flat-square) ![npm](https://img.shields.io/npm/dm/jwt-transform)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/restuwahyu13/go-jwt-transform?style=flat)
+[![Go Report Card](https://goreportcard.com/badge/github.com/restuwahyu13/go-jwt-transform)](https://goreportcard.com/report/github.com/restuwahyu13/go-jwt-transform)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/restuwahyu13/jwt-transform/blob/main/CONTRIBUTING.md)
 
 **go-jwt-transform** is a simple utility tool for your transforming a real _jwt token_ into a fake _jwt token_, because if you
