@@ -105,5 +105,5 @@ Want to make **jwt-transform** more perfect ? Let's contribute and follow the
 - [MIT License](https://github.com/restuwahyu13/go-jwt-transform/blob/main/LICENSE.md)
 
 <p align="right" style="padding: 5px; border-radius: 100%; background-color: red; font-size: 2.5rem;">
-  <b><a href="#jwt-transform">BACK TO TOP</a></b>
+  <b><a href="#go-jwt-transform">BACK TO TOP</a></b>
 </p>
