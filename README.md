@@ -49,7 +49,7 @@ fake token jwt.verify identification your token is not valid and if you not usin
   package main
 
   import (
-    "github.com/restuwahyu13/go-jwt-transform"
+    transform "github.com/restuwahyu13/go-jwt-transform"
     "fmt"
   )
 
@@ -57,7 +57,7 @@ fake token jwt.verify identification your token is not valid and if you not usin
      const accessToken string ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
     const rotate uint = 15
 
-    res, err := Encrypt(accessToken, rotate)
+    res, err := transform.Encrypt(accessToken, rotate)
 
     if err != nil {
       fmt.Error(err)
@@ -67,7 +67,7 @@ fake token jwt.verify identification your token is not valid and if you not usin
     // fake jwt token
     // tnYwqVrxDxYXJoX1CxXhXcG5rRX6XzeMKRY9.tnYosLXxDxXmByB0CIN3DSzlXxlxqbUiOHX6XzekpV4vGV9aXxlxpLU0XydmCIT2ByB5BSXnuF.HuaZmlGYHBtZZU2FI4uleBtYu36EDz6nYK_psFhhl5r
 
-    res, err := Decrypt(accessToken, rotate)
+    res, err := transform.Decrypt(accessToken, rotate)
 
     if err != nil {
       fmt.Error(err)
