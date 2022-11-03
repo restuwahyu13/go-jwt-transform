@@ -1,8 +1,14 @@
-FROM golang:1.18.8-alpine3.16
-ENV GO111MODULE="on" \
-  CGO_ENABLED="1"
+FROM golang:latest
+USER ${USER}
 COPY go.mod \
   go.sum ./
-RUN go mod download
-COPY . .
-RUN apk update
+RUN go install \
+  && go mod download
+COPY . ./
+ENV GO111MODULE="on" \
+  CGO_ENABLED="0"
+RUN apt-get clean \
+  && apt-get remove  \
+  && apt-get update \
+  && apt-get install -y \
+  build-essential
