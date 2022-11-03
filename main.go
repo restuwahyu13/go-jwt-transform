@@ -1,8 +1,6 @@
 package main
 
-import (
-	"go-jwt-transform/helpers"
-)
+import "github.com/restuwahyu13/go-jwt-transform/helpers"
 
 // Encrypt jwt token using caesar cipher cryptography from real jwt token into fake jwt token
 func Encrypt(token string, rotate uint) (string, error) {

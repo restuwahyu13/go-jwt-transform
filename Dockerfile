@@ -1,9 +1,6 @@
 FROM golang:latest
 USER ${USER}
-COPY go.mod \
-  go.sum ./
-RUN go install \
-  && go mod download
+COPY go.mod ./
 COPY . ./
 ENV GO111MODULE="on" \
   CGO_ENABLED="0"
