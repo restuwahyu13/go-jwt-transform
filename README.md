@@ -2,7 +2,7 @@
 
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/restuwahyu13/go-jwt-transform?style=flat)
 [![Go Report Card](https://goreportcard.com/badge/github.com/restuwahyu13/go-jwt-transform)](https://goreportcard.com/report/github.com/restuwahyu13/go-jwt-transform)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/restuwahyu13/jwt-transform/blob/main/CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/restuwahyu13/go-jwt-transform/blob/main/CONTRIBUTING.md)
 
 **go-jwt-transform** is a simple utility tool for your transforming a real _jwt token_ into a fake _jwt token_, because if you
 store _jwt token_ into a `cookie` or `local storage` very unsafe, your _jwt token_ can be seen data using [jwt.io](https://jwt.io)
