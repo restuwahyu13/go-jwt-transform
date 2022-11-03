@@ -90,7 +90,7 @@ fake token jwt.verify identification your token is not valid and if you not usin
 - Testing Via Docker
 
   ```sh
-  docker build -t go-jwt-transform && docker run -d go-jwt-transform go test .
+  docker build -t go-jwt-transform && docker run go-jwt-transform go test .
   ```
 
 ## Bugs
