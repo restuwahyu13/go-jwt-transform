@@ -39,9 +39,9 @@ func validator(token string, rotate uint) error {
 
 // validation for valid privateKey secret
 func credentials(privateKey string) error {
-	if len(privateKey) != 20 || len(privateKey) != 32 {
-		return fmt.Errorf("privatekey length must be 20 or 32 characters %d", len(privateKey))
-	} else if !ValidPrivateKey(privateKey) {
+	if len(privateKey) <= 20 {
+		return fmt.Errorf("privatekey length must be greater than 20 characters %d", len(privateKey))
+	} else if ok, _ := ValidPrivateKey(privateKey); !ok {
 		return fmt.Errorf("privatekey not valid %s", privateKey)
 	}
 	return nil
