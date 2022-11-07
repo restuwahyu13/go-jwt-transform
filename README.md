@@ -8,7 +8,7 @@
 store _jwt token_ into a `cookie` or `local storage` very unsafe, your _jwt token_ can be seen data using [jwt.io](https://jwt.io)
 website or chrome extension, if you use **go-jwt-transform** you real _jwt token_ cannot seen using [jwt.io](https://jwt.io)
 website or chrome extension, because what you save is fake _jwt token_, you can get back real _jwt token_ using decrypt method for
-parse fake _jwt token_.
+parse fake _jwt token_, if you need decode your fake jwt token in `front end` use [jwt-transform](https://github.com/restuwahyu13/jwt-transform).
 
 ## Table Of Content
 
