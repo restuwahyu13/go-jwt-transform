@@ -1,4 +1,4 @@
-package main
+package transform
 
 import (
 	"github.com/restuwahyu13/go-jwt-transform/helpers"
