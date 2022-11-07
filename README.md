@@ -34,7 +34,7 @@ go get github.com/restuwahyu13/go-jwt-transform
 
   encrypt jwt token using caesar cipher cryptography from real jwt token into fake jwt token
 
-- #### Decrypt(token: string, rotate: uint privatekey string): (string, error)
+- #### Decrypt(token: string, rotate: uint, privatekey string): (string, error)
 
   decrypt jwt token using caesar cipher cryptography from fake jwt token into real jwt token
 
