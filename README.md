@@ -30,11 +30,11 @@ go get github.com/restuwahyu13/go-jwt-transform
 
 ## API Reference
 
-- #### Encrypt(token: string, rotate: uint): (string, error)
+- #### Encrypt(token: string, rotate: uint, privatekey string): (string, error)
 
   encrypt jwt token using caesar cipher cryptography from real jwt token into fake jwt token
 
-- #### Decrypt(token: string, rotate: uint): (string, error)
+- #### Decrypt(token: string, rotate: uint privatekey string): (string, error)
 
   decrypt jwt token using caesar cipher cryptography from fake jwt token into real jwt token
 
@@ -52,10 +52,11 @@ fake token jwt.verify identification your token is not valid and if you not usin
   )
 
   func main() {
-    const accessToken string ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-    const rotate uint = 15
+     const accessToken string ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+     const rotate uint = 15
+     const privateKey string = "27f06382c0645033294b7bc10250dd1ed9cc6bc5"
 
-    res, err := transform.Encrypt(accessToken, rotate)
+    res, err := transform.Encrypt(accessToken, rotate, privateKey)
 
     if err != nil {
       fmt.Error(err)
@@ -65,7 +66,7 @@ fake token jwt.verify identification your token is not valid and if you not usin
     // fake jwt token
     // tnYwqVrxDxYXJoX1CxXhXcG5rRX6XzeMKRY9.tnYosLXxDxXmByB0CIN3DSzlXxlxqbUiOHX6XzekpV4vGV9aXxlxpLU0XydmCIT2ByB5BSXnuF.HuaZmlGYHBtZZU2FI4uleBtYu36EDz6nYK_psFhhl5r
 
-    res, err := transform.Decrypt(accessToken, rotate)
+    res, err := transform.Decrypt(accessToken, rotate, privateKey)
 
     if err != nil {
       fmt.Error(err)
