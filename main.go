@@ -10,7 +10,7 @@ func Encrypt(token string, rotate uint, privatekey string) (string, error) {
 		return "error", err
 	}
 
-	if err := helpers.NewCredentials(privatekey); err != nil {
+	if err := helpers.NewCredentials(token, privatekey, "encrypt"); err != nil {
 		return "error", err
 	}
 
@@ -24,7 +24,7 @@ func Decrypt(token string, rotate uint, privatekey string) (string, error) {
 		return "error", err
 	}
 
-	if err := helpers.NewCredentials(privatekey); err != nil {
+	if err := helpers.NewCredentials(token, privatekey, "decrypt"); err != nil {
 		return "error", err
 	}
 

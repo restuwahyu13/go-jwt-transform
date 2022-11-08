@@ -73,7 +73,6 @@ func TestEncrypt(t *testing.T) {
 		newPrivateKey := fmt.Sprintf("===%s===", privateKey)
 
 		_, err := Encrypt(token, rotate, newPrivateKey)
-
 		if err != nil {
 			if err.Error() == fmt.Sprintf("privatekey not valid %s", newPrivateKey) {
 				t.Log("Success")
@@ -83,13 +82,18 @@ func TestEncrypt(t *testing.T) {
 		}
 	})
 
-	t.Run("Success - Token must be jwt format", func(t *testing.T) {
+	t.Run("Error - Private key cannot same with jwt", func(t *testing.T) {
 		token := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 		rotate := uint(15)
 
-		_, err := Encrypt(token, rotate, privateKey)
-		if err == nil {
-			t.Log("Success")
+		_, err := Encrypt(token, rotate, "eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ")
+
+		if err != nil {
+			if err.Error() == fmt.Sprintf("privatekey cannot use jwt token %s", "eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ") {
+				t.Log("Success")
+			} else {
+				t.FailNow()
+			}
 		}
 	})
 
@@ -181,6 +185,22 @@ func TestDecrypt(t *testing.T) {
 
 		if err != nil {
 			if err.Error() == fmt.Sprintf("privatekey not valid %s", newPrivateKey) {
+				t.Log("Success")
+			} else {
+				t.FailNow()
+			}
+		}
+	})
+
+	t.Run("Error - Private key cannot same with jwt", func(t *testing.T) {
+		token := "tnYwqVrxDxYXJoX1CxXhXcG5rRX6XzeMKRY9.tnYosLXxDxXmByB0CIN3DSzlXxlxqbUiOHX6XzekpV4vGV9aXxlxpLU0XydmCIT2ByB5BSXnuF  27u06382r0645033294q7qr10250ss1ts9rr6qr5.HuaZmlGYHBtZZU2FI4uleBtYu36EDz6nYK_psFhhl5r"
+		rotate := uint(15)
+
+		_, err := Encrypt(token, rotate, "tnYwqVrxDxYXJoX1CxXhXcG5rRX6XzeMKRY9")
+		fmt.Printf("aaaa %s \n", err.Error())
+
+		if err != nil {
+			if err.Error() == fmt.Sprintf("privatekey cannot use jwt token %s", "tnYwqVrxDxYXJoX1CxXhXcG5rRX6XzeMKRY9") {
 				t.Log("Success")
 			} else {
 				t.FailNow()

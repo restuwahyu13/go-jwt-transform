@@ -11,8 +11,8 @@ func NewValidator(token string, rotate uint) error {
 	return validator(token, rotate)
 }
 
-func NewCredentials(privateKey string) error {
-	return credentials(privateKey)
+func NewCredentials(token, privateKey, typeRotate string) error {
+	return credentials(token, privateKey, typeRotate)
 }
 
 // validation for token and rotate value
@@ -38,11 +38,11 @@ func validator(token string, rotate uint) error {
 }
 
 // validation for valid privateKey secret
-func credentials(privateKey string) error {
+func credentials(token, privateKey, typeRorate string) error {
 	if len(privateKey) <= 20 {
 		return fmt.Errorf("privatekey length must be greater than 20 characters %d", len(privateKey))
-	} else if ok, _ := ValidPrivateKey(privateKey); !ok {
-		return fmt.Errorf("privatekey not valid %s", privateKey)
+	} else if ok, err := ValidPrivateKey(token, privateKey, typeRorate); !ok {
+		return fmt.Errorf("%s", err.Error())
 	}
 	return nil
 }
