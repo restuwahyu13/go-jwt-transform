@@ -56,20 +56,20 @@ fake token jwt.verify identification your token is not valid and if you not usin
      const rotate uint = 15
      const privateKey string = "27f06382c0645033294b7bc10250dd1ed9cc6bc5"
 
-    res, err := transform.Encrypt(accessToken, rotate, privateKey)
+    res, errEncrypt := transform.Encrypt(accessToken, rotate, privateKey)
 
-    if err != nil {
-      fmt.Error(err)
+    if errEncrypt != nil {
+      panic(errEncrypt)
     }
 
     fmt.Println(res)
     // fake jwt token
     // tnYwqVrxDxYXJoX1CxXhXcG5rRX6XzeMKRY9.tnYosLXxDxXmByB0CIN3DSzlXxlxqbUiOHX6XzekpV4vGV9aXxlxpLU0XydmCIT2ByB5BSXnuF27u06382r0645033294q7qr10250ss1ts9rr6qr5.HuaZmlGYHBtZZU2FI4uleBtYu36EDz6nYK_psFhhl5r
 
-    res, err := transform.Decrypt(accessToken, rotate, privateKey)
+    res, errDecrypt := transform.Decrypt(accessToken, rotate, privateKey)
 
-    if err != nil {
-      fmt.Error(err)
+    if errDecrypt != nil {
+      panic(errDecrypt)
     }
 
     fmt.Println(res)
