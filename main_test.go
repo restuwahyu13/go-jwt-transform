@@ -173,7 +173,6 @@ func TestDecrypt(t *testing.T) {
 		rotate := uint(15)
 
 		res, err := Decrypt(token, rotate, privateKey)
-		fmt.Println(res)
 
 		if err != nil {
 			t.FailNow()
