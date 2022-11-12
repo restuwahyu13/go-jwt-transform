@@ -1,4 +1,4 @@
-package helpers
+package transform
 
 import (
 	"fmt"
@@ -7,15 +7,6 @@ import (
 	"time"
 )
 
-func NewValidator(token string, rotate uint) error {
-	return validator(token, rotate)
-}
-
-func NewCredentials(token, privateKey, typeRotate string) error {
-	return credentials(token, privateKey, typeRotate)
-}
-
-// validation for token and rotate value
 func validator(token string, rotate uint) error {
 	typeofString := reflect.TypeOf(token)
 	typeofNumber := reflect.TypeOf(rotate)
@@ -33,16 +24,6 @@ func validator(token string, rotate uint) error {
 	toArray := strings.Split(token, ".")
 	if len(toArray) != 3 {
 		return fmt.Errorf("token must be jwt format %s", token)
-	}
-	return nil
-}
-
-// validation for valid privateKey secret
-func credentials(token, privateKey, typeRorate string) error {
-	if len(privateKey) <= 20 {
-		return fmt.Errorf("privatekey length must be greater than 20 characters %d", len(privateKey))
-	} else if ok, err := ValidPrivateKey(token, privateKey, typeRorate); !ok {
-		return fmt.Errorf("%s", err.Error())
 	}
 	return nil
 }

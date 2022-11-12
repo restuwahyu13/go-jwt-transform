@@ -1,6 +1,7 @@
-package helpers
+package transform
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"regexp"
@@ -12,7 +13,7 @@ var alphacount int = len(alphabet)
 var lca string = strings.ToLower(alphabet)
 var uca string = strings.ToUpper(alphabet)
 
-func Rotate(token string, rotate int, privatekey, typeRotate string) string {
+func rotateToken(token string, rotate int, privatekey, typeRotate string) (interface{}, error) {
 	tokenArr := strings.Split(token, ".")
 	firstToken := tokenArr[0]
 	middleToken := tokenArr[1]
@@ -32,7 +33,7 @@ func Rotate(token string, rotate int, privatekey, typeRotate string) string {
 		encryptPrivateKey := rotatePrivateKey(privatekey, int(math.Abs(float64(rotate))))
 
 		if res := strings.Contains(cleanupMergeToken, encryptPrivateKey); !res {
-			panic("private key credentials not match")
+			return nil, errors.New("private key credentials not match")
 		}
 
 		regex := regexp.MustCompile(fmt.Sprintf(`%s`, encryptPrivateKey))
@@ -51,7 +52,7 @@ func Rotate(token string, rotate int, privatekey, typeRotate string) string {
 		}
 	}
 
-	return string(text)
+	return string(text), nil
 }
 
 func rotatePrivateKey(privateKey string, rotate int) string {
