@@ -1,18 +1,19 @@
-package helpers
+package transform
 
 import (
-	"fmt"
 	"math"
 	"regexp"
 	"strings"
 )
 
-var alphabet string = "abcdefghijklmnopqrstuvwxyz"
-var alphacount int = len(alphabet)
-var lca string = strings.ToLower(alphabet)
-var uca string = strings.ToUpper(alphabet)
+var (
+	alphabet   string = "abcdefghijklmnopqrstuvwxyz"
+	alphacount int    = len(alphabet)
+	lca        string = strings.ToLower(alphabet)
+	uca        string = strings.ToUpper(alphabet)
+)
 
-func Rotate(token string, rotate int, privatekey, typeRotate string) string {
+func rotation(token string, rotate int, privateKey, typeRotate string) string {
 	tokenArr := strings.Split(token, ".")
 	firstToken := tokenArr[0]
 	middleToken := tokenArr[1]
@@ -20,7 +21,7 @@ func Rotate(token string, rotate int, privatekey, typeRotate string) string {
 	mergeToken := ""
 
 	if typeRotate == "encrypt" {
-		mergeToken = firstToken + "." + middleToken + privatekey + "." + lastToken
+		mergeToken = firstToken + "." + middleToken + privateKey + "." + lastToken
 	} else {
 		mergeToken = firstToken + "." + middleToken + "." + lastToken
 	}
@@ -29,14 +30,14 @@ func Rotate(token string, rotate int, privatekey, typeRotate string) string {
 	cleanupMergeToken := regex.ReplaceAllString(mergeToken, "")
 
 	if typeRotate == "decrypt" {
-		encryptPrivateKey := rotatePrivateKey(privatekey, int(math.Abs(float64(rotate))))
+		encryptPrivateKey := rotationPrivateKey(privateKey, int(math.Abs(float64(rotate))))
 
-		if res := strings.Contains(cleanupMergeToken, encryptPrivateKey); !res {
+		if !strings.Contains(cleanupMergeToken, encryptPrivateKey) {
 			panic("private key credentials not match")
 		}
 
-		regex := regexp.MustCompile(fmt.Sprintf(`%s`, encryptPrivateKey))
-		validJwtToken := regex.ReplaceAllString(string(cleanupMergeToken), "")
+		regex := regexp.MustCompile(encryptPrivateKey)
+		validJwtToken := regex.ReplaceAllString(cleanupMergeToken, "")
 		cleanupMergeToken = validJwtToken
 	}
 
@@ -54,7 +55,7 @@ func Rotate(token string, rotate int, privatekey, typeRotate string) string {
 	return string(text)
 }
 
-func rotatePrivateKey(privateKey string, rotate int) string {
+func rotationPrivateKey(privateKey string, rotate int) string {
 	text := []byte(privateKey)
 
 	for i, v := range text {

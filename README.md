@@ -54,9 +54,9 @@ fake token jwt.verify identification your token is not valid and if you not usin
   func main() {
      const accessToken string ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
      const rotate uint = 15
-     const privateKey string = "27f06382c0645033294b7bc10250dd1ed9cc6bc5"
+     const secretKey string = "27f06382c0645033294b7bc10250dd1ed9cc6bc5"
 
-    res, err := transform.Encrypt(accessToken, rotate, privateKey)
+    res, err := transform.Encrypt(accessToken, rotate, secretKey)
 
     if err != nil {
       fmt.Error(err)
@@ -66,7 +66,7 @@ fake token jwt.verify identification your token is not valid and if you not usin
     // fake jwt token
     // tnYwqVrxDxYXJoX1CxXhXcG5rRX6XzeMKRY9.tnYosLXxDxXmByB0CIN3DSzlXxlxqbUiOHX6XzekpV4vGV9aXxlxpLU0XydmCIT2ByB5BSXnuF27u06382r0645033294q7qr10250ss1ts9rr6qr5.HuaZmlGYHBtZZU2FI4uleBtYu36EDz6nYK_psFhhl5r
 
-    res, err := transform.Decrypt(accessToken, rotate, privateKey)
+    res, err := transform.Decrypt(accessToken, rotate, secretKey)
 
     if err != nil {
       fmt.Error(err)

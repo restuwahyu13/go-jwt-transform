@@ -1,3 +1,3 @@
 module github.com/restuwahyu13/go-jwt-transform
 
-go 1.14
+go 1.18
