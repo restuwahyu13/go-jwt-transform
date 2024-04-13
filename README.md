@@ -18,7 +18,7 @@ parse fake _jwt token_, if you need decode your fake jwt token in `front end` us
 	- [API Reference](#api-reference)
 	- [Example Usage](#example-usage)
 	    + [transfrom](#transfromsecretkey-string-plaintext-string-rotate-uint-byte-error) 
-	    + [untransform](#untransfromsecretkey-string-plaintext-string-rotate-uint-byte-error)
+	    + [untransform](#untransformsecretkey-string-ciphertext-string-rotate-uint-byte-error)
 	- [Testing](#testing)
 	- [Bugs](#bugs)
 	- [Contributing](#contributing)
