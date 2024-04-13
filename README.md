@@ -13,14 +13,14 @@ parse fake _jwt token_, if you need decode your fake jwt token in `front end` us
 ## Table Of Content
 
 - [Go JWT Transform](#go-jwt-transform)
-  - [Table Of Content](#table-of-content)
-  - [Installation](#installation)
-  - [API Reference](#api-reference)
-  - [Example Usage](#example-usage)
-  - [Testing](#testing)
-  - [Bugs](#bugs)
-  - [Contributing](#contributing)
-  - [License](#license)
+	- [Table Of Content](#table-of-content)
+	- [Installation](#installation)
+	- [API Reference](#api-reference)
+	- [Example Usage](#example-usage)
+	- [Testing](#testing)
+	- [Bugs](#bugs)
+	- [Contributing](#contributing)
+	- [License](#license)
 
 ## Installation
 
@@ -30,13 +30,13 @@ go get github.com/restuwahyu13/go-jwt-transform
 
 ## API Reference
 
-- #### Encrypt(token: string, rotate: uint, privatekey string): (string, error)
+- #### Transfrom(secretKey string, plainText: string, rotate: uint): ([]byte, error)
 
-  encrypt jwt token using caesar cipher cryptography from real jwt token into fake jwt token
+  transform jwt token using caesar cipher cryptography from real jwt token into fake jwt token
 
-- #### Decrypt(token: string, rotate: uint, privatekey string): (string, error)
+- #### Untransform(secretKey string, cipherText: string, rotate: uint): ([]byte, error)
 
-  decrypt jwt token using caesar cipher cryptography from fake jwt token into real jwt token
+  untransform jwt token using caesar cipher cryptography from fake jwt token into real jwt token
 
 ## Example Usage
 
@@ -44,38 +44,41 @@ Make this as middleware for transform your fake jwt token to real token, because
 fake token jwt.verify identification your token is not valid and if you not using express, make this as middleware.
 
 ```go
-  package main
+package main
 
-  import (
-    transform "github.com/restuwahyu13/go-jwt-transform"
-    "fmt"
-  )
+import (
+	"fmt"
+	"log"
 
-  func main() {
-     const accessToken string ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-     const rotate uint = 15
-     const secretKey string = "27f06382c0645033294b7bc10250dd1ed9cc6bc5"
+	jwttransform "github.com/restuwahyu13/go-jwt-transform"
+)
 
-    res, err := transform.Encrypt(accessToken, rotate, secretKey)
+func main() {
+	const secretKey string = "46DWzd8YCJyuEsOIy7Mt19sIT4rWaEhP"
+	const accessToken string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+	const rotate int = 15
 
-    if err != nil {
-      fmt.Error(err)
-    }
+	cipherText, err := jwttransform.Transform(secretKey, accessToken, rotate)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    fmt.Println(res)
-    // fake jwt token
-    // tnYwqVrxDxYXJoX1CxXhXcG5rRX6XzeMKRY9.tnYosLXxDxXmByB0CIN3DSzlXxlxqbUiOHX6XzekpV4vGV9aXxlxpLU0XydmCIT2ByB5BSXnuF27u06382r0645033294q7qr10250ss1ts9rr6qr5.HuaZmlGYHBtZZU2FI4uleBtYu36EDz6nYK_psFhhl5r
+	fmt.Println(string(cipherText))
+	fmt.Print("\n")
 
-    res, err := transform.Decrypt(accessToken, rotate, secretKey)
+	// fake jwt token
+	// tnYwqVrxDxYXJoX1CxXhXcG5rRX6XzeMKRY9.tnYosLXxDxXmByB0CIN3DSzlXxlxqbUiOHX6XzekpV4vGV9aXxlxpLU0XydmCIT2ByB5BSXnuF46SLos8NRYnjThDXn7Bi19hXI4gLpTwE.HuaZmlGYHBtZZU2FI4uleBtYu36EDz6nYK_psFhhl5r
 
-    if err != nil {
-      fmt.Error(err)
-    }
+	plainText, err := jwttransform.Untransform(secretKey, string(cipherText), rotate)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    fmt.Println(res)
-    // real jwt token
-    // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-  }
+	fmt.Println(string(plainText))
+
+	// real jwt token
+	// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+}
 ```
 
 ## Testing

@@ -1,27 +1,53 @@
-package transform
+package jwttransform
 
 import (
+	"errors"
 	"math"
 	"regexp"
 	"strings"
 )
 
-var (
-	alphabet   string = "abcdefghijklmnopqrstuvwxyz"
-	alphacount int    = len(alphabet)
-	lca        string = strings.ToLower(alphabet)
-	uca        string = strings.ToUpper(alphabet)
+const (
+	ENC = "encrypt"
+	DEC = "decrypt"
 )
 
-func rotation(token string, rotate int, privateKey, typeRotate string) string {
+var (
+	alphabet       string = "abcdefghijklmnopqrstuvwxyz"
+	alphacount     int    = len(alphabet)
+	lca            string = strings.ToLower(alphabet)
+	uca            string = strings.ToUpper(alphabet)
+	firstSecretKey []byte = nil
+)
+
+func getRotatedSecretKey(secretKey string, rotate int) string {
+	text := []byte(secretKey)
+
+	for i, v := range text {
+		if v >= 'a' && v <= 'z' {
+			text[i] = lca[(int((26+(v-'a')))+rotate)%alphacount]
+		} else if v >= 'A' && v <= 'Z' {
+			text[i] = uca[(int((26+(v-'A')))+rotate)%alphacount]
+		}
+	}
+
+	return string(text)
+}
+
+func rotation(secretKey, token string, rotate int, rotateType string) ([]byte, error) {
 	tokenArr := strings.Split(token, ".")
 	firstToken := tokenArr[0]
 	middleToken := tokenArr[1]
 	lastToken := tokenArr[2]
 	mergeToken := ""
 
-	if typeRotate == "encrypt" {
-		mergeToken = firstToken + "." + middleToken + privateKey + "." + lastToken
+	if rotateType == ENC {
+
+		if len(secretKey) > 0 {
+			firstSecretKey = []byte(secretKey)
+		}
+
+		mergeToken = firstToken + "." + middleToken + secretKey + "." + lastToken
 	} else {
 		mergeToken = firstToken + "." + middleToken + "." + lastToken
 	}
@@ -29,14 +55,14 @@ func rotation(token string, rotate int, privateKey, typeRotate string) string {
 	regex := regexp.MustCompile(`\s`)
 	cleanupMergeToken := regex.ReplaceAllString(mergeToken, "")
 
-	if typeRotate == "decrypt" {
-		encryptPrivateKey := rotationPrivateKey(privateKey, int(math.Abs(float64(rotate))))
+	if rotateType == DEC {
+		encryptSecretKey := getRotatedSecretKey(secretKey, int(math.Abs(float64(rotate))))
 
-		if !strings.Contains(cleanupMergeToken, encryptPrivateKey) {
-			panic("private key credentials not match")
+		if !strings.Contains(cleanupMergeToken, encryptSecretKey) || !strings.Contains(secretKey, string(firstSecretKey)) {
+			return nil, errors.New("secretKey not match")
 		}
 
-		regex := regexp.MustCompile(encryptPrivateKey)
+		regex := regexp.MustCompile(encryptSecretKey)
 		validJwtToken := regex.ReplaceAllString(cleanupMergeToken, "")
 		cleanupMergeToken = validJwtToken
 	}
@@ -52,19 +78,5 @@ func rotation(token string, rotate int, privateKey, typeRotate string) string {
 		}
 	}
 
-	return string(text)
-}
-
-func rotationPrivateKey(privateKey string, rotate int) string {
-	text := []byte(privateKey)
-
-	for i, v := range text {
-		if v >= 'a' && v <= 'z' {
-			text[i] = lca[(int((26+(v-'a')))+rotate)%alphacount]
-		} else if v >= 'A' && v <= 'Z' {
-			text[i] = uca[(int((26+(v-'A')))+rotate)%alphacount]
-		}
-	}
-
-	return string(text)
+	return text, nil
 }

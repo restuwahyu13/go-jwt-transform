@@ -1,4 +1,4 @@
-package transform
+package jwttransform
 
 import (
 	"errors"
@@ -8,50 +8,57 @@ import (
 	"strings"
 )
 
-func validator(token string, rotate uint) error {
-	if token == "" {
-		return fmt.Errorf("token required %s", token)
-	} else if rotate <= 0 {
-		return fmt.Errorf("rotate cannot zero value %d", rotate)
-	} else if reflect.TypeOf(token).Kind() != reflect.String {
-		return fmt.Errorf("token must be string format %s", token)
-	} else if reflect.TypeOf(rotate).Kind() != reflect.Uint {
-		return fmt.Errorf("rotate must be number format %d", rotate)
+func validator(secretKey, token string, rotate int, rotateType string) error {
+	tokenType := "plainText"
+	if rotateType != ENC {
+		tokenType = "cipherText"
 	}
 
-	toArray := strings.Split(token, ".")
-	if len(toArray) != 3 {
-		return fmt.Errorf("token must be jwt format %s", token)
+	if len(token) <= 0 {
+		return errors.New(fmt.Sprintf("%s not to be a empty", tokenType))
+	} else if reflect.TypeOf(token).Kind() != reflect.String {
+		return errors.New(fmt.Sprintf("%s must be a string format", tokenType))
+	} else if len(strings.Split(token, ".")) != 3 {
+		return errors.New(fmt.Sprintf("%s must be a jwt format", tokenType))
+	} else if rotate <= 0 {
+		return errors.New("rotate not to be a empty")
+	} else if reflect.TypeOf(rotate).Kind() != reflect.Int {
+		return errors.New("rotate must be a number format")
+	} else if len(secretKey) <= 20 {
+		return errors.New("secretKey length must be a greater than 20 characters")
 	}
 
 	return nil
 }
 
-func credentials(token, privateKey, typeRorate string) error {
-	if len(privateKey) <= 20 {
-		return fmt.Errorf("privatekey length must be greater than 20 characters %d", len(privateKey))
-	} else if ok, err := validPrivateKey(token, privateKey, typeRorate); !ok {
+func validSecretKey(secretKey, token string, rotate int, rotateType string) error {
+	tokenType := "plainText"
+	if rotateType != ENC {
+		tokenType = "cipherText"
+	}
+
+	if err := validator(secretKey, token, rotate, rotateType); err != nil {
 		return err
 	}
 
-	return nil
-}
-
-func validPrivateKey(token, privateKey, typeRotate string) (bool, error) {
 	newToken := token
-
-	if typeRotate == "encrypt" || typeRotate == "decrypt" {
+	if rotateType == ENC || rotateType == DEC {
 		newToken = token
 	}
 
-	if ok, _ := regexp.MatchString(`[^A-Za-z0-9]`, privateKey); ok {
-		return false, errors.New(fmt.Sprintf("privatekey not valid %s", privateKey))
-	} else if strings.Contains(newToken, privateKey) {
-		return false, errors.New(fmt.Sprintf("privatekey cannot use jwt token %s", privateKey))
+	validSecretKey, err := regexp.MatchString(`[^A-Za-z0-9]`, secretKey)
+	if err != nil {
+		return err
+	} else if validSecretKey {
+		return errors.New("secretKey invalid format")
+	} else if strings.Contains(newToken, secretKey) {
+		return errors.New(fmt.Sprintf("secretKey cannot use %s", tokenType))
 	}
 
-	regex := regexp.MustCompile(`[A-Za-z]+[0-9]|[0-9][A-Za-z]`)
-	match := regex.MatchString(privateKey)
+	regex := regexp.MustCompile(`^[a-zA-Z0-9]+$`)
+	if !regex.MatchString(secretKey) {
+		return errors.New("secretKey invalid format")
+	}
 
-	return match, nil
+	return nil
 }

@@ -1,29 +1,17 @@
-package transform
+package jwttransform
 
-// Encrypt jwt token using caesar cipher cryptography from real jwt token into fake jwt token
-func Encrypt(token string, rotate uint, secretKey string) (string, error) {
-	if err := validator(token, rotate); err != nil {
-		return "", err
+// Transform jwt token using caesar cipher cryptography from real jwt token into fake jwt token
+func Transform(secretKey string, plainText string, rotate int) ([]byte, error) {
+	if err := validSecretKey(secretKey, plainText, rotate, ENC); err != nil {
+		return nil, err
 	}
-
-	if err := credentials(token, secretKey, "encrypt"); err != nil {
-		return "", err
-	}
-
-	res := rotation(token, int(rotate), secretKey, "encrypt")
-	return res, nil
+	return rotation(secretKey, plainText, rotate, ENC)
 }
 
-// Decrypt jwt token using caesar cipher cryptography from fake jwt token into real jwt token
-func Decrypt(token string, rotate uint, secretKey string) (string, error) {
-	if err := validator(token, rotate); err != nil {
-		return "", err
+// Utransform jwt token using caesar cipher cryptography from fake jwt token into real jwt token
+func Untransform(secretKey string, token string, rotate int) ([]byte, error) {
+	if err := validSecretKey(secretKey, token, rotate, DEC); err != nil {
+		return nil, err
 	}
-
-	if err := credentials(token, secretKey, "decrypt"); err != nil {
-		return "", err
-	}
-
-	res := rotation(token, int(-rotate), secretKey, "decrypt")
-	return res, nil
+	return rotation(secretKey, token, -rotate, DEC)
 }
